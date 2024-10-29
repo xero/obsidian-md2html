@@ -1,0 +1,11 @@
+{
+	"id": "md2html",
+	"name": "md2html",
+	"version": "1.0.0",
+	"minAppVersion": "0.15.0",
+	"description": "convert markdown to html inside obsidian",
+	"author": "xero",
+	"authorUrl": "https://x-e.ro",
+	"fundingUrl": "https://github.com/sponsors/xero",
+	"isDesktopOnly": false
+}
