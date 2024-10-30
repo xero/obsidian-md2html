@@ -1,6 +1,6 @@
 {
 	"name": "obsidian-md2html-plugin",
-	"version": "1.0.0",
+	"version": "1.1.1",
 	"description": "convert markdown to html inside obsidian (https://obsidian.md)",
 	"main": "main.js",
 	"scripts": {

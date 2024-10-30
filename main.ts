@@ -14,7 +14,7 @@ const marked = new Marked({
 		async highlight(code, lang) {
 			return await codeToHtml(code, { lang, theme: "evangelion" });
 		},
-		container: `<figure class="highlighted-code">%s</figure>`,
+		container: `%s`,
 	}),
 );
 export default class MD2HTML extends Plugin {
@@ -25,7 +25,7 @@ export default class MD2HTML extends Plugin {
 			editorCallback: async (editor: Editor) => {
 				const dom = await marked.parse(editor.getSelection());
 				editor.replaceSelection(dom);
-				new Notice("selection converted to html", 8000);
+				new Notice("selection converted to html", 3500);
 			},
 		});
 		this.addCommand({
@@ -34,7 +34,7 @@ export default class MD2HTML extends Plugin {
 			editorCallback: async (editor: Editor) => {
 				const dom = await marked.parse(editor.getValue());
 				editor.setValue(dom);
-				new Notice("document converted to html", 8000);
+				new Notice("document converted to html", 3500);
 			},
 		});
 		this.addCommand({
@@ -44,7 +44,7 @@ export default class MD2HTML extends Plugin {
 				const dom = await marked.parse(editor.getValue());
 				const file = this.app.workspace.getActiveFile();
 				this.app.vault.create("html-" + file?.name, dom);
-				new Notice("document converted to new html file", 8000);
+				new Notice("document converted to new html file", 3500);
 			},
 		});
 		this.addCommand({
@@ -53,7 +53,7 @@ export default class MD2HTML extends Plugin {
 			editorCallback: async (editor: Editor) => {
 				const dom = await marked.parse(editor.getValue());
 				navigator.clipboard.writeText(dom);
-				new Notice("converted html saved to the clipboard", 8000);
+				new Notice("converted html saved to the clipboard", 3500);
 			},
 		});
 
