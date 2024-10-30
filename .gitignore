@@ -1,18 +1,63 @@
-# vscode
-.vscode
-
-# Intellij
+main.js
+# runtime data
 *.iml
-.idea
-
-# npm
-node_modules
-
-# Exclude sourcemaps
+*.log
 *.map
-
-# obsidian
+*.pid
+*.pid.lock
+*.seed
+*.tgz
+.env
+.eslintcache
+.grunt
+.idea
+.lock-wscript
+.node_repl_history
+.npm
+.nyc_output
+.vscode
+.yarn-integrity
+Session.vim
+build/Release
+coverage
 data.json
+jspm_packages/
+lib-cov
+node_modules
+npm-debug.log*
+pids
+typings/
+yarn-debug.log*
+yarn-error.log*
 
-# Exclude macOS Finder (System Explorer) View States
+# swap
+[._]*.s[a-v][a-z]
+[._]*.sw[a-p]
+[._]s[a-v][a-z]
+[._]sw[a-p]
+
+# apple
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+.netrwhist
+*~
+tags
 .DS_Store
+.AppleDouble
+.LSOverride
+# icon must end with two \r
+Icon
+
+
+# thumbnails
+._*

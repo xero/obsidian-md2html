@@ -1,58 +1,59 @@
-import { Converter } from "showdown";
-import {
-	App,
-	Editor,
-	Notice,
-	Plugin,
-	PluginSettingTab,
-	Setting,
-} from "obsidian";
-
+import { App, Editor, Notice, Plugin, PluginSettingTab } from "obsidian";
+import { Marked } from "marked";
+import markedFootnote from "marked-footnote";
+import markedShiki from "marked-shiki";
+import { codeToHtml } from "shiki";
+const marked = new Marked({
+		async: true,
+		pedantic: false,
+		gfm: true,
+		breaks: true,
+	},
+	markedFootnote(),
+	markedShiki({
+		async highlight(code, lang) {
+			return await codeToHtml(code, { lang, theme: "evangelion" });
+		},
+		container: `<figure class="highlighted-code">%s</figure>`,
+	}),
+);
 export default class MD2HTML extends Plugin {
 	async onload() {
 		this.addCommand({
 			id: "md2html-selection",
 			name: "convert selection",
-			editorCallback: (editor: Editor) => {
-				const showdown = new Converter();
-				editor.replaceSelection(
-					showdown.makeHtml(editor.getSelection()),
-				);
-				new Notice("selection converted to html", 5000);
+			editorCallback: async (editor: Editor) => {
+				const dom = await marked.parse(editor.getSelection());
+				editor.replaceSelection(dom);
+				new Notice("selection converted to html", 8000);
 			},
 		});
 		this.addCommand({
 			id: "md2html-doc",
 			name: "convert document",
-			editorCallback: (editor: Editor) => {
-				const showdown = new Converter();
-				editor.setValue(showdown.makeHtml(editor.getValue()));
-				new Notice("document converted to html", 5000);
+			editorCallback: async (editor: Editor) => {
+				const dom = await marked.parse(editor.getValue());
+				editor.setValue(dom);
+				new Notice("document converted to html", 8000);
 			},
 		});
 		this.addCommand({
 			id: "md2html-new",
 			name: "convert to new file",
-			editorCallback: (editor: Editor) => {
-				const showdown = new Converter();
+			editorCallback: async (editor: Editor) => {
+				const dom = await marked.parse(editor.getValue());
 				const file = this.app.workspace.getActiveFile();
-				this.app.vault.create(
-					"html-" + file?.name,
-					showdown.makeHtml(editor.getValue()),
-				);
-				new Notice("document converted to new html file", 5000);
+				this.app.vault.create("html-" + file?.name, dom);
+				new Notice("document converted to new html file", 8000);
 			},
 		});
-
 		this.addCommand({
 			id: "md2html-clip",
 			name: "convert to clipboard",
-			editorCallback: (editor: Editor) => {
-				const showdown = new Converter();
-				navigator.clipboard.writeText(
-					showdown.makeHtml(editor.getValue()),
-				);
-				new Notice("converted html saved to the clipboard", 5000);
+			editorCallback: async (editor: Editor) => {
+				const dom = await marked.parse(editor.getValue());
+				navigator.clipboard.writeText(dom);
+				new Notice("converted html saved to the clipboard", 8000);
 			},
 		});
 
