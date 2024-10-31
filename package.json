@@ -34,5 +34,8 @@
 		"shiki": "^1.22.2",
 		"tslib": "2.4.0",
 		"typescript": "4.7.4"
+	},
+	"dependencies": {
+		"marked-gfm-heading-id": "^4.1.0"
 	}
 }

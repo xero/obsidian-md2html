@@ -1,36 +1,26 @@
 import { App, Editor, Notice, Plugin, PluginSettingTab } from "obsidian";
-import { Marked, Tokens } from "marked";
+import { Marked, MarkedExtension, Renderer, Tokens } from "marked";
 import { codeToHtml } from "shiki";
 import { transformerMetaHighlight } from "@shikijs/transformers";
+import { gfmHeadingId } from "marked-gfm-heading-id";
 import markedFootnote from "marked-footnote";
 import markedAlert from "marked-alert";
 import markedShiki from "marked-shiki";
 
-const customRenderers = {
-  extensions: [{
-    name: 'inlinecode',
-    level: 'inline',
-    renderer({ text }: Tokens.Codespan): string {
-		const code = this.parser.parseInline(text);
-		return `<kbd>${code}</kbd>`;
-    }
-  },{
-    name: 'anchors',
-    level: 'block',
-    renderer({ tokens, depth }: Tokens.Heading): string {
-		const text = this.parser.parseInline(tokens);
-		const escapedText = text.toLowerCase().replace(/[^\w]+/g, '-');
-		return `
-		<h${depth}>
-		  <a name="${escapedText}" class="anchor" href="#${escapedText}">
-			<span class="header-link"></span>
-		  </a>
-		  ${text}
-		</h${depth}>`;
-    }
-  }],
-  async: true
-};
+function inlineCode():MarkedExtension {
+	return {
+		hooks: {
+			preprocess(src: string) {
+				return src;
+			},
+		},
+		renderer: {
+			codespan(this:Renderer , src: Tokens.Codespan) {
+				return `<kbd>${src}</kbd>`;
+			},
+		},
+	};
+}
 
 const marked = new Marked(
 	{
@@ -39,8 +29,11 @@ const marked = new Marked(
 		gfm: true,
 		breaks: true,
 	},
-	customRenderers,
+	inlineCode(),
 	markedFootnote(),
+	gfmHeadingId({
+		prefix: "",
+	}),
 	markedAlert({
 		className: "callout",
 		variants: [
@@ -271,7 +264,7 @@ export default class MD2HTML extends Plugin {
 		this.addSettingTab(new md2htmlSettingTab(this.app, this));
 	}
 
-	onunload() {}
+	onunload() { }
 }
 
 class md2htmlSettingTab extends PluginSettingTab {
