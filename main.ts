@@ -1,9 +1,37 @@
 import { App, Editor, Notice, Plugin, PluginSettingTab } from "obsidian";
-import { Marked } from "marked";
+import { Marked, Tokens } from "marked";
 import { codeToHtml } from "shiki";
+import { transformerMetaHighlight } from "@shikijs/transformers";
 import markedFootnote from "marked-footnote";
 import markedAlert from "marked-alert";
 import markedShiki from "marked-shiki";
+
+const customRenderers = {
+  extensions: [{
+    name: 'inlinecode',
+    level: 'inline',
+    renderer({ text }: Tokens.Codespan): string {
+		const code = this.parser.parseInline(text);
+		return `<kbd>${code}</kbd>`;
+    }
+  },{
+    name: 'anchors',
+    level: 'block',
+    renderer({ tokens, depth }: Tokens.Heading): string {
+		const text = this.parser.parseInline(tokens);
+		const escapedText = text.toLowerCase().replace(/[^\w]+/g, '-');
+		return `
+		<h${depth}>
+		  <a name="${escapedText}" class="anchor" href="#${escapedText}">
+			<span class="header-link"></span>
+		  </a>
+		  ${text}
+		</h${depth}>`;
+    }
+  }],
+  async: true
+};
+
 const marked = new Marked(
 	{
 		async: true,
@@ -11,6 +39,7 @@ const marked = new Marked(
 		gfm: true,
 		breaks: true,
 	},
+	customRenderers,
 	markedFootnote(),
 	markedAlert({
 		className: "callout",
@@ -190,9 +219,13 @@ const marked = new Marked(
 	}),
 	markedShiki({
 		async highlight(code, lang) {
-			return await codeToHtml(code, { lang, theme: "evangelion" });
+			return await codeToHtml(code, {
+				lang,
+				theme: "evangelion",
+				transformers: [transformerMetaHighlight()],
+			});
 		},
-		container: `<div class="block-language-%l expressive-code"><figure class="frame"><figcaption class="header">%l</figcaption></figure>%s</div>`,
+		container: `<div class="expressive-code"><figure class="frame"><figcaption class="header">%l</figcaption></figure>%s</div>`,
 	}),
 );
 export default class MD2HTML extends Plugin {
