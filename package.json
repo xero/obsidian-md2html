@@ -19,23 +19,27 @@
 	"author": "",
 	"license": "CC0",
 	"devDependencies": {
+		"@expressive-code/plugin-line-numbers": "^0.38.0",
 		"@shikijs/transformers": "^1.22.2",
 		"@types/node": "^16.11.6",
 		"@typescript-eslint/eslint-plugin": "5.29.0",
 		"@typescript-eslint/parser": "5.29.0",
 		"builtin-modules": "3.3.0",
 		"esbuild": "0.17.3",
-		"marked": "^14.1.3",
-		"marked-alert": "^2.1.1",
-		"marked-footnote": "^1.2.4",
-		"marked-shiki": "^1.1.1",
 		"obsidian": "latest",
 		"patch-package": "^8.0.0",
+		"rehype-callout": "^0.1.0",
+		"rehype-expressive-code": "^0.38.0",
+		"rehype-format": "^5.0.1",
+		"rehype-raw": "^7.0.0",
+		"rehype-sanitize": "^6.0.0",
+		"rehype-stringify": "^10.0.1",
+		"remark-expressive-code": "0.34.0",
+		"remark-parse": "^11.0.0",
+		"remark-rehype": "^11.1.1",
 		"shiki": "^1.22.2",
 		"tslib": "2.4.0",
-		"typescript": "4.7.4"
-	},
-	"dependencies": {
-		"marked-gfm-heading-id": "^4.1.0"
+		"typescript": "4.7.4",
+		"unified": "^11.0.5"
 	}
 }
