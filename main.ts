@@ -16,9 +16,19 @@ import {
 	Plugin,
 	PluginSettingTab,
 	MarkdownView,
+	Component,
+	MarkdownRenderer,
 } from "obsidian";
 
 export default class md2html extends Plugin {
+	async getHtml(md: string, file: string, view: MarkdownView) {
+		const component = new Component();
+		component.load();
+		const renderDiv = view.contentEl;
+		await MarkdownRenderer.render(this.app, md, renderDiv, file, component);
+		renderDiv.innerHTML.replace(/style="display: none;"/g, '');
+		return renderDiv.innerHTML;
+	}
 	async onload() {
 		// this.addCommand({
 		// 	id: "md2html-selection",
@@ -33,8 +43,13 @@ export default class md2html extends Plugin {
 			id: "md2html-doc",
 			name: "convert document",
 			editorCallback: async (editor: Editor, view: MarkdownView) => {
-				view.previewMode.rerender(true);
-				editor.setValue(view.contentEl.innerHTML.valueOf());
+				const file = this.app.workspace.getActiveFile()?.name || "nop";
+				const dom = await this.getHtml(
+					view.getViewData(),
+					file,
+					view,
+				);
+				editor.setValue(dom);
 				new Notice("document converted to html", 3500);
 			},
 		});
@@ -42,9 +57,13 @@ export default class md2html extends Plugin {
 			id: "md2html-new",
 			name: "convert to new file",
 			editorCallback: async (_editor: Editor, view: MarkdownView) => {
-				const file = this.app.workspace.getActiveFile();
-				const dom = view.contentEl.find(".markdown-reading-view").innerHTML;
-				this.app.vault.create("html-" + file?.name, dom);
+				const file = this.app.workspace.getActiveFile()?.name || "nop";
+				const dom = await this.getHtml(
+					view.getViewData(),
+					file,
+					view,
+				);
+				this.app.vault.create("html-" + file, dom);
 				new Notice("document converted to new html file", 3500);
 			},
 		});
@@ -52,8 +71,11 @@ export default class md2html extends Plugin {
 			id: "md2html-clip",
 			name: "convert to clipboard",
 			editorCallback: async (_editor: Editor, view: MarkdownView) => {
-				navigator.clipboard.writeText(view.contentEl.find(".markdown-reading-view").innerHTML);
-				new Notice("converted html saved to the clipboard", 3500);
+				const file = this.app.workspace.getActiveFile()?.name || "nop";
+				navigator.clipboard.writeText(
+					await this.getHtml(view.getViewData(), file, view),
+				);
+				new Notice("document html saved to the clipboard", 3500);
 			},
 		});
 
