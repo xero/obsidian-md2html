@@ -1,6 +1,6 @@
 {
 	"name": "obsidian-md2html-plugin",
-	"version": "1.1.1",
+	"version": "2.2.2",
 	"description": "convert markdown to html inside obsidian (https://obsidian.md)",
 	"main": "main.js",
 	"scripts": {
@@ -16,26 +16,16 @@
 		"converter",
 		"markdown to html"
 	],
-	"author": "",
+	"author": "xero",
 	"license": "CC0",
 	"devDependencies": {
-		"@shikijs/transformers": "^1.22.2",
 		"@types/node": "^16.11.6",
 		"@typescript-eslint/eslint-plugin": "5.29.0",
 		"@typescript-eslint/parser": "5.29.0",
 		"builtin-modules": "3.3.0",
 		"esbuild": "0.17.3",
-		"marked": "^14.1.3",
-		"marked-alert": "^2.1.1",
-		"marked-footnote": "^1.2.4",
-		"marked-shiki": "^1.1.1",
 		"obsidian": "latest",
-		"patch-package": "^8.0.0",
-		"shiki": "^1.22.2",
 		"tslib": "2.4.0",
 		"typescript": "4.7.4"
-	},
-	"dependencies": {
-		"marked-gfm-heading-id": "^4.1.0"
 	}
 }
