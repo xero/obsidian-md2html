@@ -2,7 +2,7 @@
 
 <img src="logo.svg" width="200">
 
-a plugin for converting your markdown notes to html inside [obsidian](https://obsidian.md)!
+a zero dependency plugin to export notes to html inside [obsidian](https://obsidian.md)! uses obsidian's own internal rendering calls, so your html will look exactly like it does in _your_ editor.
 
 ## usage
 
@@ -21,20 +21,9 @@ and search **"md2html"**, this will give you 4 options:
 
 ### manual
 
-- vist the [releases](https://github.com/xero/obsidian-md2html/releases/) page, and grab two files from the latest version
+- visit the [releases](https://github.com/xero/obsidian-md2html/releases/) page, and grab two files from the latest version
 - copy `main.js`, and `manifest.json` to your vault's plugin folder under `md2html`
 	- `~vault/.obsidian/plugins/md2html/`
-
-## powered by
-
-- [marked](https://www.npmjs.com/package/marked)
-- [marked-alert](https://www.npmjs.com/package/marked-alert)
-- [marked-footnote](https://www.npmjs.com/package/marked-footnote)
-- [marked-shiki](https://www.npmjs.com/package/marked-shiki)
-- [obsidian](https://www.npmjs.com/package/obsidian)
-- [patch-package](https://www.npmjs.com/package/patch-package)
-- [shiki](https://www.npmjs.com/package/shiki)
-- [typescript](https://www.npmjs.com/package/typescript)
 
 # license
 
