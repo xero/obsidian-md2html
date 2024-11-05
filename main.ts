@@ -34,23 +34,16 @@ export default class md2html extends Plugin {
 			name: "convert document",
 			editorCallback: async (editor: Editor, view: MarkdownView) => {
 				view.previewMode.rerender(true);
-				const dom = view.contentEl.getText();
-				editor.setValue(dom);
+				editor.setValue(view.contentEl.innerHTML.valueOf());
 				new Notice("document converted to html", 3500);
 			},
 		});
 		this.addCommand({
 			id: "md2html-new",
 			name: "convert to new file",
-			editorCallback: async (editor: Editor, view: MarkdownView) => {
-				view.previewMode.rerender(true);
-				let dom = "";
-				let el;
-				const x = document.querySelectorAll(".markdown-rendered")
-				for(el in x) {
-					dom += el.toString();
-				}
+			editorCallback: async (_editor: Editor, view: MarkdownView) => {
 				const file = this.app.workspace.getActiveFile();
+				const dom = view.contentEl.find(".markdown-reading-view").innerHTML;
 				this.app.vault.create("html-" + file?.name, dom);
 				new Notice("document converted to new html file", 3500);
 			},
@@ -58,15 +51,8 @@ export default class md2html extends Plugin {
 		this.addCommand({
 			id: "md2html-clip",
 			name: "convert to clipboard",
-			editorCallback: async (editor: Editor, view: MarkdownView) => {
-				view.previewMode.rerender(true);
-				let dom = "";
-				let el;
-				const x = document.querySelectorAll(".markdown-rendered")
-				for(el in x) {
-					dom += el.valueOf();
-				}
-				navigator.clipboard.writeText(dom);
+			editorCallback: async (_editor: Editor, view: MarkdownView) => {
+				navigator.clipboard.writeText(view.contentEl.find(".markdown-reading-view").innerHTML);
 				new Notice("converted html saved to the clipboard", 3500);
 			},
 		});
