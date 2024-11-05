@@ -9,253 +9,32 @@ _____  ____ _______     _______ .____ __.____________.__  _____._____
 /////           ///// /////          /////   ///   /////         ///////
 
  */
-import { App, Editor, Notice, Plugin, PluginSettingTab } from "obsidian";
-import { Marked, MarkedExtension, Renderer, Tokens } from "marked";
-import { codeToHtml } from "shiki";
 import {
-	transformerMetaHighlight,
-	transformerNotationErrorLevel,
-	transformerNotationHighlight,
-} from "@shikijs/transformers";
-import { gfmHeadingId } from "marked-gfm-heading-id";
-import markedFootnote from "marked-footnote";
-import markedAlert from "marked-alert";
-import markedShiki from "marked-shiki";
+	App,
+	Editor,
+	Notice,
+	Plugin,
+	PluginSettingTab,
+	MarkdownView,
+} from "obsidian";
 
-function inlineCode(): MarkedExtension {
-	return {
-		hooks: {
-			preprocess(src: string) {
-				return src;
-			},
-		},
-		renderer: {
-			codespan(this: Renderer, src: Tokens.Codespan) {
-				return `<kbd>${src.text}</kbd>`;
-			},
-		},
-	};
-}
-
-const marked = new Marked(
-	{
-		async: true,
-		pedantic: false,
-		gfm: true,
-		breaks: true,
-	},
-	inlineCode(),
-	markedFootnote(),
-	gfmHeadingId({
-		prefix: "",
-	}),
-	markedAlert({
-		className: "callout",
-		variants: [
-			{
-				type: "abstract",
-				icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 12H3"/><path d="M16 18H3"/><path d="M16 6H3"/><path d="M21 12h.01"/><path d="M21 18h.01"/><path d="M21 6h.01"/></svg>',
-				title: "abstract",
-				titleClassName: "callout-abstract",
-			},
-			{
-				type: "attention",
-				icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>',
-				title: "attention",
-				titleClassName: "callout-attention",
-			},
-			{
-				type: "bug",
-				icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/><path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/><path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/><path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/><path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/><path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/><path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/></svg>',
-				title: "bug",
-				titleClassName: "callout-bug",
-			},
-			{
-				type: "caution",
-				icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16h.01"/><path d="M12 8v4"/><path d="M15.312 2a2 2 0 0 1 1.414.586l4.688 4.688A2 2 0 0 1 22 8.688v6.624a2 2 0 0 1-.586 1.414l-4.688 4.688a2 2 0 0 1-1.414.586H8.688a2 2 0 0 1-1.414-.586l-4.688-4.688A2 2 0 0 1 2 15.312V8.688a2 2 0 0 1 .586-1.414l4.688-4.688A2 2 0 0 1 8.688 2z"/></svg>',
-				title: "caution",
-				titleClassName: "callout-caution",
-			},
-			{
-				type: "check",
-				icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>',
-				title: "check",
-				titleClassName: "callout-check",
-			},
-			{
-				type: "danger",
-				icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12.5 17-.5-1-.5 1h1z"/><path d="M15 22a1 1 0 0 0 1-1v-1a2 2 0 0 0 1.56-3.25 8 8 0 1 0-11.12 0A2 2 0 0 0 8 20v1a1 1 0 0 0 1 1z"/><circle cx="15" cy="12" r="1"/><circle cx="9" cy="12" r="1"/></svg>',
-				title: "danger",
-				titleClassName: "callout-danger",
-			},
-			{
-				type: "default",
-				/* shield-x */
-				icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m14.5 9.5-5 5"/><path d="m9.5 9.5 5 5"/></svg>',
-				title: "default",
-				titleClassName: "callout-default",
-			},
-			{
-				type: "done",
-				icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10.5V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.5"/><path d="m9 11 3 3L22 4"/></svg>',
-				title: "done",
-				titleClassName: "callout-done",
-			},
-			{
-				type: "error",
-				icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-x"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>',
-				title: "error",
-				titleClassName: "callout-error",
-			},
-			{
-				type: "example",
-				icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21V7"/><path d="m16 12 2 2 4-4"/><path d="M22 6V4a1 1 0 0 0-1-1h-5a4 4 0 0 0-4 4 4 4 0 0 0-4-4H3a1 1 0 0 0-1 1v13a1 1 0 0 0 1 1h6a3 3 0 0 1 3 3 3 3 0 0 1 3-3h6a1 1 0 0 0 1-1v-1.3"/></svg>',
-				title: "example",
-				titleClassName: "callout-example",
-			},
-			{
-				type: "fail",
-				icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m2 2 20 20"/><path d="M8.35 2.69A10 10 0 0 1 21.3 15.65"/><path d="M19.08 19.08A10 10 0 1 1 4.92 4.92"/></svg>',
-				title: "fail",
-				titleClassName: "callout-fail",
-			},
-			{
-				type: "failure",
-				icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 10H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2"/><path d="M6 14H4a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2h-2"/><path d="M6 6h.01"/><path d="M6 18h.01"/><path d="m13 6-4 6h6l-4 6"/></svg>',
-				title: "failure",
-				titleClassName: "callout-failure",
-			},
-			{
-				type: "faq",
-				icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>',
-				title: "faq",
-				titleClassName: "callout-faq",
-			},
-			{
-				type: "gear",
-				icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v1c0 1 2 1 2 2S3 6 3 7s2 1 2 2-2 1-2 2 2 1 2 2"/><path d="M18 6h.01"/><path d="M6 18h.01"/><path d="M20.83 8.83a4 4 0 0 0-5.66-5.66l-12 12a4 4 0 1 0 5.66 5.66Z"/><path d="M18 11.66V22a4 4 0 0 0 4-4V6"/></svg>',
-				title: "gear",
-				titleClassName: "callout-gear",
-			},
-			{
-				type: "help",
-				/* book marked */
-				icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v8l3-3 3 3V2"/><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20"/></svg>',
-				title: "help",
-				titleClassName: "callout-help",
-			},
-			{
-				type: "hint",
-				icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>',
-				title: "hint",
-				titleClassName: "callout-hint",
-			},
-			{
-				type: "important",
-				/* favorite star */
-				icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg>',
-				title: "important",
-				titleClassName: "callout-important",
-			},
-			{
-				type: "info",
-				icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-info"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>',
-				title: "info",
-				titleClassName: "callout-info",
-			},
-			{
-				type: "missing",
-				icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 17h.01"/><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"/><path d="M9.1 9a3 3 0 0 1 5.82 1c0 2-3 3-3 3"/></svg>',
-				title: "missing",
-				titleClassName: "callout-missing",
-			},
-			{
-				type: "note",
-				icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 12h-5"/><path d="M15 8h-5"/><path d="M19 17V5a2 2 0 0 0-2-2H4"/><path d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3"/></svg>',
-				title: "note",
-				titleClassName: "callout-note",
-			},
-			{
-				type: "question",
-				icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-help"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>',
-				title: "question",
-				titleClassName: "callout-question",
-			},
-			{
-				type: "quote",
-				icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 12h-5"/><path d="M15 8h-5"/><path d="M19 17V5a2 2 0 0 0-2-2H4"/><path d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3"/></svg>',
-				title: "quote",
-				titleClassName: "callout-quote",
-			},
-			{
-				type: "success",
-				icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><path d="m9 12 2 2 4-4"/></svg>',
-				title: "success",
-				titleClassName: "callout-success",
-			},
-			{
-				type: "summary",
-				icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 12h6"/><path d="M15 6h6"/><path d="m3 13 3.553-7.724a.5.5 0 0 1 .894 0L11 13"/><path d="M3 18h18"/><path d="M4 11h6"/></svg>',
-				title: "summary",
-				titleClassName: "callout-summary",
-			},
-			{
-				type: "tip",
-				icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>',
-				title: "tip",
-				titleClassName: "callout-tip",
-			},
-			{
-				type: "tldr",
-				icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m14.5 7-5 5"/><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20"/><path d="m9.5 7 5 5"/></svg>',
-				title: "tldr",
-				titleClassName: "callout-tldr",
-			},
-			{
-				type: "todo",
-				icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clipboard-check"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></svg>',
-				title: "todo",
-				titleClassName: "callout-todo",
-			},
-			{
-				type: "warning",
-				icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>',
-				title: "warning",
-				titleClassName: "callout-warning",
-			},
-		],
-	}),
-	markedShiki({
-		async highlight(code, lang) {
-			return await codeToHtml(code, {
-				lang,
-				theme: "evangelion",
-				transformers: [
-					transformerMetaHighlight(),
-					transformerNotationErrorLevel(),
-					transformerNotationHighlight(),
-				],
-			});
-		},
-		container: `<div class="expressive-code"><figure class="frame"><figcaption class="header">%l</figcaption></figure>%s</div>`,
-	}),
-);
 export default class md2html extends Plugin {
 	async onload() {
-		this.addCommand({
-			id: "md2html-selection",
-			name: "convert selection",
-			editorCallback: async (editor: Editor) => {
-				const dom = await marked.parse(editor.getSelection());
-				editor.replaceSelection(dom);
-				new Notice("selection converted to html", 3500);
-			},
-		});
+		// this.addCommand({
+		// 	id: "md2html-selection",
+		// 	name: "convert selection",
+		// 	editorCallback: async (editor: Editor, view: MarkdownView) => {
+		// 		const dom = await marked.parse(view.contentEl.getText());
+		// 		editor.replaceSelection(dom);
+		// 		new Notice("selection converted to html", 3500);
+		// 	},
+		// });
 		this.addCommand({
 			id: "md2html-doc",
 			name: "convert document",
-			editorCallback: async (editor: Editor) => {
-				const dom = await marked.parse(editor.getValue());
+			editorCallback: async (editor: Editor, view: MarkdownView) => {
+				view.previewMode.rerender(true);
+				const dom = view.contentEl.getText();
 				editor.setValue(dom);
 				new Notice("document converted to html", 3500);
 			},
@@ -263,8 +42,14 @@ export default class md2html extends Plugin {
 		this.addCommand({
 			id: "md2html-new",
 			name: "convert to new file",
-			editorCallback: async (editor: Editor) => {
-				const dom = await marked.parse(editor.getValue());
+			editorCallback: async (editor: Editor, view: MarkdownView) => {
+				view.previewMode.rerender(true);
+				let dom = "";
+				let el;
+				const x = document.querySelectorAll(".markdown-rendered")
+				for(el in x) {
+					dom += el.toString();
+				}
 				const file = this.app.workspace.getActiveFile();
 				this.app.vault.create("html-" + file?.name, dom);
 				new Notice("document converted to new html file", 3500);
@@ -273,8 +58,14 @@ export default class md2html extends Plugin {
 		this.addCommand({
 			id: "md2html-clip",
 			name: "convert to clipboard",
-			editorCallback: async (editor: Editor) => {
-				const dom = await marked.parse(editor.getValue());
+			editorCallback: async (editor: Editor, view: MarkdownView) => {
+				view.previewMode.rerender(true);
+				let dom = "";
+				let el;
+				const x = document.querySelectorAll(".markdown-rendered")
+				for(el in x) {
+					dom += el.valueOf();
+				}
 				navigator.clipboard.writeText(dom);
 				new Notice("converted html saved to the clipboard", 3500);
 			},
