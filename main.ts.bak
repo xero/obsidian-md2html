@@ -7,41 +7,76 @@
 |____://///    \\____X_____//// /////:____|  \__/  |____://///  \_______/
 /////           ///// /////          /////   ///   /////         /////// */
 
-import { App, MarkdownView, Notice, Plugin, PluginSettingTab } from "obsidian";
+import {
+	App,
+	Component,
+	Editor,
+	MarkdownRenderer,
+	MarkdownView,
+	Notice,
+	Plugin,
+	PluginSettingTab,
+} from "obsidian";
 
 export default class md2html extends Plugin {
-	html() {
-		const view = this.app.workspace.getActiveViewOfType(MarkdownView);
-		view?.load();
-		let dom = "";
-		const objs: HTMLCollectionOf<Element> | undefined = view?.contentEl.children;
-		(objs as any as Array<HTMLElement>).forEach((el: HTMLElement) => {
-			//el.scrollIntoView();
-			//view?.previewMode.rerender(true);
-			dom += el.innerHTML;
-		});
-		return dom.replace(/display: none;/g, "");
+	async markdownToHtml(markdown: string): Promise<string> {
+		const component = new Component();
+		component.load();
+		const renderDiv = createDiv();
+		await MarkdownRenderer.render(
+			this.app,
+			markdown,
+			renderDiv,
+			"",
+			component,
+		);
+		const html = renderDiv.innerHTML;
+		component.unload();
+		return html;
 	}
 
 	async onload() {
 		this.addCommand({
-			id: "md2html-clip",
-			name: "note html to clipboard",
-			callback: async () => {
-				navigator.clipboard.writeText(this.html());
-				new Notice("html copied to the clipboard", 3500);
+			id: "md2html-selection",
+			name: "copy selection html to clipboard",
+			editorCallback: async (editor: Editor) => {
+				navigator.clipboard.writeText(
+					await this.markdownToHtml(editor.getSelection()),
+				);
+				new Notice("selection converted to html", 3500);
+			},
+		});
+
+		this.addCommand({
+			id: "md2html-doc",
+			name: "convert note to html",
+			editorCallback: async (editor: Editor, view: MarkdownView) => {
+				const dom = await this.markdownToHtml(view.getViewData());
+				editor.setValue(dom);
+				new Notice("document converted to html", 3500);
 			},
 		});
 
 		this.addCommand({
 			id: "md2html-new",
 			name: "note html to new file",
-			callback: async () => {
+			editorCallback: async (_editor: Editor, view: MarkdownView) => {
+				const dom = await this.markdownToHtml(view.getViewData());
 				this.app.vault.create(
 					"html-" + this.app.workspace.getActiveFile()?.name || "new",
-					this.html(),
+					dom,
 				);
 				new Notice("document converted to new html file", 3500);
+			},
+		});
+
+		this.addCommand({
+			id: "md2html-clip",
+			name: "note html to clipboard",
+			editorCallback: async (_editor: Editor, view: MarkdownView) => {
+				const dom = await this.markdownToHtml(view.getViewData());
+				navigator.clipboard.writeText(dom);
+				new Notice("document html saved to the clipboard", 3500);
 			},
 		});
 
