@@ -12,15 +12,15 @@ import { App, MarkdownView, Notice, Plugin, PluginSettingTab } from "obsidian";
 export default class md2html extends Plugin {
 	html() {
 		const view = this.app.workspace.getActiveViewOfType(MarkdownView);
-		view?.load();
-		let dom = "";
-		const objs: HTMLCollectionOf<Element> | undefined = view?.contentEl.children;
-		(objs as any as Array<HTMLElement>).forEach((el: HTMLElement) => {
-			//el.scrollIntoView();
-			//view?.previewMode.rerender(true);
-			dom += el.innerHTML;
-		});
-		return dom.replace(/display: none;/g, "");
+		if (!view) return ""
+
+		view.load();
+		view.previewMode.applyScroll(view.contentEl.scrollHeight + 100);
+		view.contentEl.scrollTo({ top: view.contentEl.scrollHeight + 100 });
+		return '<div class="markdown-reading-view'
+			+ view?.contentEl.innerHTML
+				.split('<div class="markdown-reading-view')[1]
+				.replace(/display: none;/g, "");
 	}
 
 	async onload() {
@@ -28,7 +28,11 @@ export default class md2html extends Plugin {
 			id: "md2html-clip",
 			name: "note html to clipboard",
 			callback: async () => {
-				navigator.clipboard.writeText(this.html());
+				const html = this.html();
+				if (html === "")
+					new Notice("error. no active document", 3500);
+
+				navigator.clipboard.writeText(html);
 				new Notice("html copied to the clipboard", 3500);
 			},
 		});
@@ -37,10 +41,12 @@ export default class md2html extends Plugin {
 			id: "md2html-new",
 			name: "note html to new file",
 			callback: async () => {
-				this.app.vault.create(
-					"html-" + this.app.workspace.getActiveFile()?.name || "new",
-					this.html(),
-				);
+				const file = "html-" + this.app.workspace.getActiveFile()?.name || "new";
+				const html = this.html();
+				if (html === "")
+					new Notice("error. no active document", 3500);
+
+				this.app.vault.create(file, html);
 				new Notice("document converted to new html file", 3500);
 			},
 		});
@@ -48,7 +54,7 @@ export default class md2html extends Plugin {
 		this.addSettingTab(new md2htmlSettingTab(this.app, this));
 	}
 
-	onunload() {}
+	onunload() { }
 }
 
 class md2htmlSettingTab extends PluginSettingTab {
