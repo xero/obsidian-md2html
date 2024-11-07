@@ -11,23 +11,28 @@ import { App, MarkdownView, Notice, Plugin, PluginSettingTab } from "obsidian";
 
 export default class md2html extends Plugin {
 	html() {
+		const editor = this.app.workspace.activeEditor?.editor
 		const view = this.app.workspace.getActiveViewOfType(MarkdownView);
 		if (!view) return ""
-
 		view.load();
-		view.previewMode.applyScroll(view.contentEl.scrollHeight + 100);
-		view.contentEl.scrollTo({ top: view.contentEl.scrollHeight + 100 });
-		return '<div class="markdown-reading-view'
-			+ view?.contentEl.innerHTML
-				.split('<div class="markdown-reading-view')[1]
-				.replace(/display: none;/g, "");
+		editor?.scrollTo(0, 0);
+		editor?.scrollTo(0, editor?.lineCount() * 100);
+		const scrollpos = {
+				from: { line: 0, ch: 0 },
+				to: { line: editor?.lineCount() || 999, ch: 0 }
+			};
+		editor?.scrollIntoView(scrollpos);
+		view.previewMode.rerender(true);
+		return view?.contentEl.innerHTML
+			.split('<div class="markdown-reading-view')[0]
+			.replace(/display: none;/g, "");
 	}
 
 	async onload() {
 		this.addCommand({
 			id: "md2html-clip",
 			name: "note html to clipboard",
-			callback: async () => {
+			callback: () => {
 				const html = this.html();
 				if (html === "")
 					new Notice("error. no active document", 3500);
@@ -40,7 +45,7 @@ export default class md2html extends Plugin {
 		this.addCommand({
 			id: "md2html-new",
 			name: "note html to new file",
-			callback: async () => {
+			callback: () => {
 				const file = "html-" + this.app.workspace.getActiveFile()?.name || "new";
 				const html = this.html();
 				if (html === "")
