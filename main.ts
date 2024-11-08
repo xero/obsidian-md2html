@@ -8,24 +8,23 @@
 /////           ///// /////          /////   ///   /////         /////// */
 
 import { App, MarkdownView, Notice, Plugin, PluginSettingTab } from "obsidian";
-
 export default class md2html extends Plugin {
 	html() {
-		const editor = this.app.workspace.activeEditor?.editor
+		let html = ''
 		const view = this.app.workspace.getActiveViewOfType(MarkdownView);
-		if (!view) return ""
-		view.load();
-		editor?.scrollTo(0, 0);
-		editor?.scrollTo(0, editor?.lineCount() * 100);
-		const scrollpos = {
-				from: { line: 0, ch: 0 },
-				to: { line: editor?.lineCount() || 999, ch: 0 }
-			};
-		editor?.scrollIntoView(scrollpos);
-		view.previewMode.rerender(true);
-		return view?.contentEl.innerHTML
-			.split('<div class="markdown-reading-view')[0]
-			.replace(/display: none;/g, "");
+		if (view) {
+			const cur = view.previewMode.getScroll();
+			// @ts-expect-error, not typed
+			const codeMirror = view.editor.cm;
+			//codeMirror.scrollTo(0, 9999999);
+			codeMirror.viewState.printing = true;
+			codeMirror.measure();
+			html = view?.contentEl.innerHTML;
+			codeMirror.viewState.printing = false;
+			codeMirror.measure();
+			view.previewMode.applyScroll(cur);
+		}
+		return html;
 	}
 
 	async onload() {
