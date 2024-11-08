@@ -8,12 +8,13 @@ a zero dependency plugin to export notes to html inside [obsidian](https://obsid
 
 open the command pallet (default is control+p `^p` or command+p `⌘p`)
 
-and search **"md2html"**, this will give you 4 options:
+and search **"md2html"**, this will give you 5 options:
 
 - **convert document**: replaces current note's markdown with html
 - **convert selection**: replaces currently selected text to html
 - **convert to clipboard**: converts the current note's content to html and saves it to the clipboard
 - **convert to new file**: converts the current notes's content to html and saves it to a new file named: `html-{note name}.md`
+- **usage help**: displays the settings page
 
 > **_tip!_** these can be mapped as shortcuts in the hotkey settings tab
 
