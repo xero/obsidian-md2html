@@ -20,18 +20,39 @@ import {
 
 export default class md2html extends Plugin {
 	//--- render functions
-	getRendered() {
+	async getRendered() {
 		const view = this.app.workspace.getActiveViewOfType(MarkdownView);
 		let html = "";
 		if (view) {
+			// save scroll pos
+			const last = {
+				editor: view.editor.getScrollInfo(),
+				preview: view.previewMode.getScroll()
+			}
+			let i = 0;
 			const cm = view.editor.cm;
+			view.previewMode.unfoldAll();
 			cm.focus();
 			cm.viewState.printing = true;
 			cm.measure();
-			sleep(1000000);
-			html = view?.contentEl.innerHTML;
+			// force render document
+			new Notice("render loop started");
+			while (i < view.editor.lineCount()) {
+				await sleep(1);
+				view.editor.scrollTo(0, i * 50);
+				view.previewMode.applyScroll(i);
+				i++;
+			}
+			new Notice("render loop complete");
+			// get html dom
+			html = view.contentEl.innerHTML;
+			//html += view.previewMode.view.contentEl.innerHTML;
 			cm.viewState.printing = false;
 			cm.measure();
+			// reset scroll pos
+			view.editor.scrollTo(last.editor.left, last.editor.top);
+			view.previewMode.applyScroll(last.preview);
+			view.previewMode.rerender(true);
 		}
 		return html;
 	}
@@ -50,8 +71,8 @@ export default class md2html extends Plugin {
 		this.addCommand({
 			id: "md2html-clip",
 			name: "copy note html to clipboard",
-			callback: () => {
-				const html = this.getRendered();
+			callback: async () => {
+				const html = await this.getRendered();
 				if (html === "") new Notice("error. no active document", 3500);
 				navigator.clipboard.writeText(html);
 				new Notice("html copied to the clipboard", 3500);
@@ -76,7 +97,7 @@ export default class md2html extends Plugin {
 			callback: async () => {
 				const file =
 					"html-" + this.app.workspace.getActiveFile()?.name || "new";
-				const html = this.getRendered();
+				const html = await this.getRendered();
 				if (html === "") new Notice("error. no active document", 3500);
 				this.app.vault.create(file, html);
 				new Notice("document converted to new html file", 3500);
@@ -86,7 +107,7 @@ export default class md2html extends Plugin {
 			id: "md2html-doc",
 			name: "convert note to html",
 			editorCallback: async (editor: Editor) => {
-				editor.setValue(this.getRendered());
+				editor.setValue(await this.getRendered());
 				new Notice("document converted to html", 3500);
 			},
 		});
@@ -103,7 +124,7 @@ export default class md2html extends Plugin {
 		this.addSettingTab(new md2htmlSettingTab(this.app, this));
 	}
 
-	onunload() {}
+	onunload() { }
 }
 
 class md2htmlSettingTab extends PluginSettingTab {
