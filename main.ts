@@ -36,17 +36,14 @@ export default class md2html extends Plugin {
 			cm.viewState.printing = true;
 			cm.measure();
 			// force render document
-			new Notice("render loop started");
-			while (i < view.editor.lineCount()) {
-				await sleep(1);
+			while (i++ < view.editor.lineCount()) {
 				view.editor.scrollTo(0, i * 50);
 				view.previewMode.applyScroll(i);
-				i++;
 			}
-			new Notice("render loop complete");
+			sleep(1);
 			// get html dom
 			html = view.contentEl.innerHTML;
-			//html += view.previewMode.view.contentEl.innerHTML;
+			html += view.previewMode.view.contentEl.innerHTML;
 			cm.viewState.printing = false;
 			cm.measure();
 			// reset scroll pos
@@ -71,7 +68,7 @@ export default class md2html extends Plugin {
 		this.addCommand({
 			id: "md2html-clip",
 			name: "copy note html to clipboard",
-			callback: async () => {
+			editorCallback: async () => {
 				const html = await this.getRendered();
 				if (html === "") new Notice("error. no active document", 3500);
 				navigator.clipboard.writeText(html);
@@ -94,7 +91,7 @@ export default class md2html extends Plugin {
 		this.addCommand({
 			id: "md2html-new",
 			name: "note html to new file",
-			callback: async () => {
+			editorCallback: async () => {
 				const file =
 					"html-" + this.app.workspace.getActiveFile()?.name || "new";
 				const html = await this.getRendered();
