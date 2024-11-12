@@ -3,12 +3,12 @@ module.exports = {
 		"postcss-import": {
 			from: "src/main.css",
 		},
-		"tailwindcss/nesting": {},
-		autoprefixer: {},
+		"postcss-nested": {},
+		"postcss-css-variables": {},
 		"postcss-csso": {
 			restructure: true,
 			forceMediaMerge: true,
-			comments: false
-		}
-	}
+			comments: false,
+		},
+	},
 };
