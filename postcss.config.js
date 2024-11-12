@@ -5,6 +5,7 @@ module.exports = {
 		},
 		"postcss-nested": {},
 		"postcss-css-variables": {},
+		"autoprefixer": {},
 		"postcss-csso": {
 			restructure: true,
 			forceMediaMerge: true,
