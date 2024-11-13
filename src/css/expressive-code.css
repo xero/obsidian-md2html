@@ -535,22 +535,22 @@
 		--ec-brdCol: #e1e4e8;
 		--ec-codeBg: #fff;
 		--ec-codeFg: #24292e;
-		--ec-codeSelBg: #0366d625;
-		--ec-gtrFg: #1b1f2381;
-		--ec-gtrBrdCol: #1b1f2333;
+		--ec-codeSelBg: #0366d6;
+		--ec-gtrFg: #1b1f23;
+		--ec-gtrBrdCol: #201430;
 		--ec-gtrHlFg: #24292eab;
 		--ec-uiSelBg: #e2e5e9;
 		--ec-uiSelFg: #2f363d;
 		--ec-focusBrd: #2188ff;
-		--ec-sbThumbCol: #959da533;
-		--ec-sbThumbHoverCol: #959da5eb;
-		--ec-tm-markBg: #9ab6ff99;
-		--ec-tm-insBg: #8ec77d99;
-		--ec-tm-insDiffIndCol: #336a28d0;
-		--ec-tm-delBg: #ff9c8e99;
-		--ec-tm-delDiffIndCol: #9d4138d0;
-		--ec-frm-shdCol: #00000028;
-		--ec-frm-frameBoxShdCssVal: 0.1rem 0.1rem 0.2rem #00000028;
+		--ec-sbThumbCol: #959da5;
+		--ec-sbThumbHoverCol: #959da5;
+		--ec-tm-markBg: #9ab6ff;
+		--ec-tm-insBg: #8ec77d;
+		--ec-tm-insDiffIndCol: #336a28;
+		--ec-tm-delBg: #ff9c8e;
+		--ec-tm-delDiffIndCol: #9d4138;
+		--ec-frm-shdCol: #000000;
+		--ec-frm-frameBoxShdCssVal: 0.1rem 0.1rem 0.2rem #000000;
 		--ec-frm-edActTabBg: #fff;
 		--ec-frm-edActTabFg: #2f363d;
 		--ec-frm-edActTabIndBtmCol: #fff;
@@ -568,7 +568,7 @@
 		--ec-frm-inlBtnBrd: #24292e;
 		--ec-frm-tooltipSuccessBg: #208638;
 		--ec-cs-closedBgCol: #d1d5da33;
-		--ec-cs-closedBrdCol: #d1d5da80;
+		--ec-cs-closedBrdCol: #d1d5da;
 	}
 	:root:not([data-theme='dark']) .expressive-code .ec-line :where(span[style^='--']:not([class])) {
 		color: var(--1, inherit);
@@ -584,7 +584,7 @@
 	--ec-codeFg: #24292e;
 	--ec-codeSelBg: #0366d625;
 	--ec-gtrFg: #1b1f2381;
-	--ec-gtrBrdCol: #1b1f2333;
+	--ec-gtrBrdCol: #201430;
 	--ec-gtrHlFg: #24292eab;
 	--ec-uiSelBg: #e2e5e9;
 	--ec-uiSelFg: #2f363d;

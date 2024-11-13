@@ -1,13 +1,14 @@
 {
   "name": "obsidian-md2html-plugin",
-  "version": "2.0.3",
+  "version": "2.1.1",
   "description": "convert markdown to html inside obsidian (https://obsidian.md)",
   "main": "main.js",
   "scripts": {
     "dev": "node esbuild.config.mjs",
     "build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
     "version": "node version-bump.mjs && git add manifest.json versions.json",
-    "css": "bun run postcss src/main.css --no-map -o dist/style.css"
+    "css": "bun run postcss src/css/main.css --no-map -o dist/style.css",
+	"web": "bash generate"
   },
   "keywords": [
     "obsidian",

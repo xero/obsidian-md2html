@@ -1,0 +1,11 @@
+#!/bin/bash
+# cp ~notes/html-* ./src/notes
+mkdir -p dist
+find ./src -type f -iname "html-*.md" | while IFS= read -r F; do
+	name=$(echo "$F" | sed -r "s/html-//;s/.+\/(.+)\..+/\1/;s/ /_/g")
+	dist="./dist/$name.html"
+	head=$(sed "s/:title:/$name/" <  ./src/html/header.html)
+	foot=$(cat ./src/html/footer.html)
+	dom=$(cat "$F");
+	printf "%s\n%s\n%s" "$head" "$dom" "$foot" > "$dist"
+done
