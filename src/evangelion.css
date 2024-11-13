@@ -198,11 +198,18 @@ pre,
 }
 
 .expressive-code {
-	.sr-only,
-	.copy {
-		display: none !important;
+	.copy button {
+		transform: scale(0.6) !important;
+		margin-bottom: -10px !important;
+		margin-right: -10px !important;
+		&::after {
+			background-color: #00ff00 !important;
+		}
+		&:hover {
+			background-color: transparent !important;
+		}
 	}
-
+	.sr-only,
 	.ec-line.ins {
 		background: linear-gradient(
 			90deg,
@@ -859,18 +866,75 @@ hr.workspace-leaf-resize-handle {
 }
 
 /* data view */
-body:not(.table-100):not(.table-max):not(.table-wide) .markdown-preview-view.is-readable-line-width:not(.table-100):not( .table-max):not(.table-wide) .block-language-dataview h4,
-body:not(.table-100):not(.table-max):not(.table-wide) .markdown-preview-view.is-readable-line-width:not(.table-100):not( .table-max):not(.table-wide) .block-language-dataview > h4,
-body:not(.table-100):not(.table-max):not(.table-wide) .markdown-preview-view.is-readable-line-width:not(.table-100):not( .table-max):not(.table-wide) .block-language-dataviewjs h4,
-body:not(.table-100):not(.table-max):not(.table-wide) .markdown-preview-view.is-readable-line-width:not(.table-100):not( .table-max):not(.table-wide) .block-language-dataviewjs > h1,
-body:not(.table-100):not(.table-max):not(.table-wide) .markdown-preview-view.is-readable-line-width:not(.table-100):not( .table-max):not(.table-wide) .block-language-dataviewjs > h2,
-body:not(.table-100):not(.table-max):not(.table-wide) .markdown-preview-view.is-readable-line-width:not(.table-100):not( .table-max):not(.table-wide) .block-language-dataviewjs > h3,
-body:not(.table-100):not(.table-max):not(.table-wide) .markdown-preview-view.is-readable-line-width:not(.table-100):not( .table-max):not(.table-wide) .block-language-dataviewjs > h4,
-body:not(.table-100):not(.table-max):not(.table-wide) .markdown-preview-view.is-readable-line-width:not(.table-100):not( .table-max):not(.table-wide) .block-language-dataviewjs > p,
-body:not(.table-100):not(.table-max):not(.table-wide) .markdown-preview-view.is-readable-line-width:not(.table-100):not( .table-max):not(.table-wide) .dataview.dataview-container > .contains-task-list,
-body:not(.table-100):not(.table-max):not(.table-wide) .markdown-preview-view.is-readable-line-width:not(.table-100):not( .table-max):not(.table-wide) .dataview.dataview-error,
-body:not(.table-100):not(.table-max):not(.table-wide) .markdown-preview-view.is-readable-line-width:not(.table-100):not( .table-max):not(.table-wide) .dataview.list-view-ul,
-body:not(.table-100):not(.table-max):not(.table-wide) .markdown-preview-view.is-readable-line-width:not(.table-100):not( .table-max):not(.table-wide) .dataview.result-group {
+body:not(.table-100):not(.table-max):not(.table-wide)
+	.markdown-preview-view.is-readable-line-width:not(.table-100):not(
+		.table-max
+	):not(.table-wide)
+	.block-language-dataview
+	h4,
+body:not(.table-100):not(.table-max):not(.table-wide)
+	.markdown-preview-view.is-readable-line-width:not(.table-100):not(
+		.table-max
+	):not(.table-wide)
+	.block-language-dataview
+	> h4,
+body:not(.table-100):not(.table-max):not(.table-wide)
+	.markdown-preview-view.is-readable-line-width:not(.table-100):not(
+		.table-max
+	):not(.table-wide)
+	.block-language-dataviewjs
+	h4,
+body:not(.table-100):not(.table-max):not(.table-wide)
+	.markdown-preview-view.is-readable-line-width:not(.table-100):not(
+		.table-max
+	):not(.table-wide)
+	.block-language-dataviewjs
+	> h1,
+body:not(.table-100):not(.table-max):not(.table-wide)
+	.markdown-preview-view.is-readable-line-width:not(.table-100):not(
+		.table-max
+	):not(.table-wide)
+	.block-language-dataviewjs
+	> h2,
+body:not(.table-100):not(.table-max):not(.table-wide)
+	.markdown-preview-view.is-readable-line-width:not(.table-100):not(
+		.table-max
+	):not(.table-wide)
+	.block-language-dataviewjs
+	> h3,
+body:not(.table-100):not(.table-max):not(.table-wide)
+	.markdown-preview-view.is-readable-line-width:not(.table-100):not(
+		.table-max
+	):not(.table-wide)
+	.block-language-dataviewjs
+	> h4,
+body:not(.table-100):not(.table-max):not(.table-wide)
+	.markdown-preview-view.is-readable-line-width:not(.table-100):not(
+		.table-max
+	):not(.table-wide)
+	.block-language-dataviewjs
+	> p,
+body:not(.table-100):not(.table-max):not(.table-wide)
+	.markdown-preview-view.is-readable-line-width:not(.table-100):not(
+		.table-max
+	):not(.table-wide)
+	.dataview.dataview-container
+	> .contains-task-list,
+body:not(.table-100):not(.table-max):not(.table-wide)
+	.markdown-preview-view.is-readable-line-width:not(.table-100):not(
+		.table-max
+	):not(.table-wide)
+	.dataview.dataview-error,
+body:not(.table-100):not(.table-max):not(.table-wide)
+	.markdown-preview-view.is-readable-line-width:not(.table-100):not(
+		.table-max
+	):not(.table-wide)
+	.dataview.list-view-ul,
+body:not(.table-100):not(.table-max):not(.table-wide)
+	.markdown-preview-view.is-readable-line-width:not(.table-100):not(
+		.table-max
+	):not(.table-wide)
+	.dataview.result-group {
 	/* width fix */
 	max-width: 100%;
 }
