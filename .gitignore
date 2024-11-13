@@ -1,5 +1,6 @@
 # 𝙄𝙂𝙉𝙊𝙍𝙀 𝙈𝙀! 🙈
 main.js
+dist
 # runtime data
 *.iml
 *.log
@@ -31,6 +32,7 @@ typings/
 yarn-debug.log*
 yarn-error.log*
 package-lock.json
+bun.lockb
 
 # swap
 [._]*.s[a-v][a-z]
