@@ -198,19 +198,9 @@ pre,
 }
 
 .expressive-code {
-	&:hover {
-		.copy button {
-			background-color: transparent !important;
-		}
-	}
-
-	.copy button {
-		transform: scale(0.9) !important;
-		margin-bottom: 8px;
-		margin-right: -5px !important;
-		&::after {
-			background-color: #00ff00 !important;
-		}
+	.sr-only,
+	.copy {
+		display: none !important;
 	}
 
 	.ec-line.ins {
@@ -425,6 +415,7 @@ blockquote {
 			padding-right: 3px;
 		}
 
+		.callout-title-inner,
 		em,
 		strong,
 		.cm-em,

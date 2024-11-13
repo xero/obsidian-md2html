@@ -2004,7 +2004,6 @@ body {
 	padding: 0;
 	height: 100%;
 	width: 100%;
-	overscroll-behavior: none;
 }
 body {
 	text-rendering: optimizeLegibility;
@@ -2046,9 +2045,6 @@ body [contenteditable="true"],
 body [contenteditable=""] {
 	user-select: text;
 	-webkit-user-select: text;
-}
-body:not(.is-mobile) {
-	overflow: hidden;
 }
 body.is-grabbing,
 body.is-grabbing *:not(.workspace-leaf-resize-handle) {
@@ -4254,7 +4250,6 @@ body:not(.is-mobile) .workspace-split.mod-left-split .workspace-sidedock-vault-p
 	flex-grow: 1;
 	align-items: center;
 	gap: var(--size-4-2);
-	overflow: hidden;
 	padding: var(--size-4-1) var(--size-4-2);
 }
 body:not(.is-mobile) .workspace-split.mod-left-split .workspace-sidedock-vault-profile .workspace-drawer-vault-switcher.has-active-menu {
