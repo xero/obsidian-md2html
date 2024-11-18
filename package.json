@@ -8,7 +8,7 @@
     "build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
     "version": "node version-bump.mjs && git add manifest.json versions.json",
     "css": "bun run postcss src/css/main.css --no-map -o dist/style.css",
-	"web": "bash generate"
+    "web": "bash generate"
   },
   "keywords": [
     "obsidian",
@@ -26,6 +26,7 @@
     "autoprefixer": "^10.4.20",
     "builtin-modules": "3.3.0",
     "esbuild": "0.17.3",
+    "eslint": "^9.14.0",
     "obsidian": "latest",
     "obsidian-typings": "^2.3.1-beta.1",
     "postcss": "^8.4.49",

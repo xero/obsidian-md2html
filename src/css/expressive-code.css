@@ -1,3 +1,101 @@
+:root {
+	--ec-brdRad: 0.5rem;
+	--ec-brdWd: 1px;
+	--ec-brdCol: #1b1f23;
+	--ec-codeFontFml: var(--font-monospace-default);
+	--ec-codeFontSize: var(--font-smaller);
+	--ec-codeFontWg: 400;
+	--ec-codeLineHt: var(--line-height);
+	--ec-codePadBlk: 0.75rem;
+	--ec-codePadInl: 1rem;
+	--ec-codeBg: #24292e;
+	--ec-codeFg: #e1e4e8;
+	--ec-codeSelBg: #3392ff;
+	--ec-gtrFg: #727980;
+	--ec-gtrBrdCol: #201430;
+	--ec-gtrBrdWd: 1.5px;
+	--ec-gtrHlFg: #e1e4e8;
+	--ec-uiFontFml: var(--font-monospace-default);
+	--ec-uiFontSize: 0.9rem;
+	--ec-uiFontWg: 400;
+	--ec-uiLineHt: 1.65;
+	--ec-uiPadBlk: 0.25rem;
+	--ec-uiPadInl: 1rem;
+	--ec-uiSelBg: #39414a;
+	--ec-uiSelFg: #e1e4e8;
+	--ec-focusBrd: #005cc5;
+	--ec-sbThumbCol: #6a737d33;
+	--ec-sbThumbHoverCol: #6a737d;
+	--ec-tm-lineMarkerAccentMarg: 0rem;
+	--ec-tm-lineMarkerAccentWd: 0.15rem;
+	--ec-tm-lineMarkerLabelPadInl: 0.2rem;
+	--ec-tm-lineMarkerLabelCol: white;
+	--ec-tm-lineDiffIndMargLeft: 0.25rem;
+	--ec-tm-inlMarkerBrdWd: 1.5px;
+	--ec-tm-inlMarkerBrdRad: 0.2rem;
+	--ec-tm-inlMarkerPad: 0.15rem;
+	--ec-tm-insDiffIndContent: "+";
+	--ec-tm-delDiffIndContent: "-";
+	--ec-tm-markBg: #174a9099;
+	--ec-tm-markBrdCol: #4d70bc;
+	--ec-tm-insBg: #1e5715;
+	--ec-tm-insBrdCol: #487f3b;
+	--ec-tm-insDiffIndCol: #79b169;
+	--ec-tm-delBg: #862d27;
+	--ec-tm-delBrdCol: #b4554b;
+	--ec-tm-delDiffIndCol: #ed8779;
+	--ec-frm-shdCol: #000000;
+	--ec-frm-frameBoxShdCssVal: 0.1rem 0.1rem 0.2rem #000000;
+	--ec-frm-edActTabBg: #24292e;
+	--ec-frm-edActTabFg: #e1e4e8;
+	--ec-frm-edActTabBrdCol: transparent;
+	--ec-frm-edActTabIndHt: 1px;
+	--ec-frm-edActTabIndTopCol: #f9826c;
+	--ec-frm-edActTabIndBtmCol: #24292e;
+	--ec-frm-edTabsMargInlStart: 0;
+	--ec-frm-edTabsMargBlkStart: 0;
+	--ec-frm-edTabBrdRad: 0.5rem;
+	--ec-frm-edTabBarBg: #1f2428;
+	--ec-frm-edTabBarBrdCol: #1b1f23;
+	--ec-frm-edTabBarBrdBtmCol: #1b1f23;
+	--ec-frm-edBg: #24292e;
+	--ec-frm-trmTtbFg: #e1e4e8;
+	--ec-frm-trmTtbDotsFg: #e1e4e8;
+	--ec-frm-trmTtbDotsOpa: 0.15;
+	--ec-frm-trmTtbBg: #24292e;
+	--ec-frm-trmTtbBrdBtmCol: #1b1f23;
+	--ec-frm-trmBg: #1f2428;
+	--ec-frm-inlBtnFg: #e1e4e8;
+	--ec-frm-inlBtnBg: #e1e4e8;
+	--ec-frm-inlBtnBgIdleOpa: 0;
+	--ec-frm-inlBtnBgHoverOrFocusOpa: 0.2;
+	--ec-frm-inlBtnBgActOpa: 0.3;
+	--ec-frm-inlBtnBrd: #e1e4e8;
+	--ec-frm-inlBtnBrdOpa: 0.4;
+	--ec-frm-tooltipSuccessBg: #228739;
+	--ec-frm-tooltipSuccessFg: white;
+	--ec-cs-closedBrdWd: 0;
+	--ec-cs-closedPadBlk: 4px;
+	--ec-cs-closedMarg: 0;
+	--ec-cs-closedFontFml: inherit;
+	--ec-cs-closedFontSize: inherit;
+	--ec-cs-closedLineHt: inherit;
+	--ec-cs-closedTextCol: inherit;
+	--ec-cs-closedBgCol: #58606933;
+	--ec-cs-closedBrdCol: #58606980;
+	--ec-cs-openBrdWd: 1px;
+	--ec-cs-openPad: 0;
+	--ec-cs-openMarg: 0;
+	--ec-cs-openBgCol: transparent;
+	--ec-cs-openBrdCol: transparent;
+	--ec-lineNumbers-fg: inherit;
+	--ec-lineNumbers-hlFg: inherit;
+	--ecLineBrdCol: transparent;
+	--header-border-radius: calc(var(--ec-brdRad) + var(--ec-brdWd));
+	--tab-border-radius: 0;
+	--button-spacing: 0.4rem;
+	--code-background: var(--ec-frm-edBg);
+}
 .expressive-code {
 	font-family: var(--ec-uiFontFml);
 	font-size: var(--ec-uiFontSize);
@@ -64,7 +162,7 @@
 	direction: ltr;
 	unicode-bidi: isolate;
 	display: grid;
-	grid-template-areas: 'gutter code';
+	grid-template-areas: "gutter code";
 	grid-template-columns: auto 1fr;
 	position: relative;
 }
@@ -87,7 +185,9 @@
 	grid-area: code;
 	position: relative;
 	box-sizing: content-box;
-	padding-inline-start: calc(var(--ecIndent, 0ch) + var(--ec-codePadInl) - var(--ecGtrBrdWd));
+	padding-inline-start: calc(
+		var(--ecIndent, 0ch) + var(--ec-codePadInl) - var(--ecGtrBrdWd)
+	);
 	padding-inline-end: var(--ec-codePadInl);
 	text-indent: calc(var(--ecIndent, 0ch) * -1);
 }
@@ -98,7 +198,8 @@
 }
 .expressive-code .ec-line .code {
 	--ecGtrBrdWd: var(--ec-gtrBrdWd);
-	border-inline-start: var(--ecGtrBrdWd) solid var(--ecLineBrdCol, transparent);
+	border-inline-start: var(--ecGtrBrdWd) solid
+		var(--ecLineBrdCol, transparent);
 }
 .expressive-code :nth-child(1 of .ec-line) .code {
 	padding-inline-end: calc(2rem + var(--ec-codePadInl));
@@ -157,7 +258,7 @@
 	position: absolute;
 	left: 0;
 	box-sizing: border-box;
-	content: var(--tmLabel, ' ');
+	content: var(--tmLabel, " ");
 	padding-inline-start: var(--ec-tm-lineDiffIndMargLeft);
 	text-align: center;
 	white-space: pre;
@@ -166,8 +267,11 @@
 .expressive-code .ec-line.ins.tm-label .code::before,
 .expressive-code .ec-line.del.tm-label .code::before {
 	background: var(--ecLineBrdCol);
-	padding: 0 calc(var(--ec-tm-lineMarkerLabelPadInl) + var(--ec-tm-lineMarkerAccentWd)) 0
-		var(--ec-tm-lineMarkerLabelPadInl);
+	padding: 0
+		calc(
+			var(--ec-tm-lineMarkerLabelPadInl) + var(--ec-tm-lineMarkerAccentWd)
+		)
+		0 var(--ec-tm-lineMarkerLabelPadInl);
 	color: var(--ec-tm-lineMarkerLabelCol);
 }
 .expressive-code .ec-line mark {
@@ -217,7 +321,7 @@
 .expressive-code .ec-line mark::before,
 .expressive-code .ec-line ins::before,
 .expressive-code .ec-line del::before {
-	content: '';
+	content: "";
 	position: absolute;
 	pointer-events: none;
 	display: inline-block;
@@ -252,10 +356,12 @@
 	border-top-right-radius: 0;
 }
 .expressive-code .frame .title:empty:before {
-	content: '\a0';
+	content: "\a0";
 }
 .expressive-code .frame.has-title:not(.is-terminal) {
-	--button-spacing: calc(1.9rem + 2 * (var(--ec-uiPadBlk) + var(--ec-frm-edActTabIndHt)));
+	--button-spacing: calc(
+		1.9rem + 2 * (var(--ec-uiPadBlk) + var(--ec-frm-edActTabIndHt))
+	);
 }
 .expressive-code .frame.has-title:not(.is-terminal) .title {
 	position: relative;
@@ -263,19 +369,22 @@
 	background: var(--ec-frm-edActTabBg);
 	background-clip: padding-box;
 	margin-block-start: var(--ec-frm-edTabsMargBlkStart);
-	padding: calc(var(--ec-uiPadBlk) + var(--ec-frm-edActTabIndHt)) var(--ec-uiPadInl);
+	padding: calc(var(--ec-uiPadBlk) + var(--ec-frm-edActTabIndHt))
+		var(--ec-uiPadInl);
 	border: var(--ec-brdWd) solid var(--ec-frm-edActTabBrdCol);
 	border-radius: var(--tab-border-radius) var(--tab-border-radius) 0 0;
 	border-bottom: none;
 	overflow: hidden;
 }
 .expressive-code .frame.has-title:not(.is-terminal) .title::after {
-	content: '';
+	content: "";
 	position: absolute;
 	pointer-events: none;
 	inset: 0;
-	border-top: var(--ec-frm-edActTabIndHt) solid var(--ec-frm-edActTabIndTopCol);
-	border-bottom: var(--ec-frm-edActTabIndHt) solid var(--ec-frm-edActTabIndBtmCol);
+	border-top: var(--ec-frm-edActTabIndHt) solid
+		var(--ec-frm-edActTabIndTopCol);
+	border-bottom: var(--ec-frm-edActTabIndHt) solid
+		var(--ec-frm-edActTabIndBtmCol);
 }
 .expressive-code .frame.has-title:not(.is-terminal) .header {
 	display: flex;
@@ -289,7 +398,7 @@
 	padding-inline-start: var(--ec-frm-edTabsMargInlStart);
 }
 .expressive-code .frame.has-title:not(.is-terminal) .header::before {
-	content: '';
+	content: "";
 	position: absolute;
 	pointer-events: none;
 	inset: 0;
@@ -316,7 +425,7 @@
 	border-bottom: none;
 }
 .expressive-code .frame.is-terminal .header::before {
-	content: '';
+	content: "";
 	position: absolute;
 	pointer-events: none;
 	left: var(--ec-uiPadInl);
@@ -331,7 +440,7 @@
 	mask-repeat: no-repeat;
 }
 .expressive-code .frame.is-terminal .header::after {
-	content: '';
+	content: "";
 	position: absolute;
 	pointer-events: none;
 	inset: 0;
@@ -378,7 +487,7 @@
 	transition-timing-function: inherit;
 }
 .expressive-code .copy button::before {
-	content: '';
+	content: "";
 	position: absolute;
 	pointer-events: none;
 	inset: 0;
@@ -387,7 +496,7 @@
 	opacity: var(--ec-frm-inlBtnBrdOpa);
 }
 .expressive-code .copy button::after {
-	content: '';
+	content: "";
 	position: absolute;
 	pointer-events: none;
 	inset: 0;
@@ -434,7 +543,7 @@
 	transform: translate3d(0, 0.25rem, 0);
 }
 .expressive-code .copy .feedback::after {
-	content: '';
+	content: "";
 	position: absolute;
 	pointer-events: none;
 	top: calc(50% - var(--tooltip-arrow-size));
@@ -455,14 +564,18 @@
 		height: 2rem;
 	}
 	.expressive-code .frame:hover .copy button:not(:hover),
-	.expressive-code .frame:focus-within :focus-visible ~ .copy button:not(:hover),
+	.expressive-code
+		.frame:focus-within
+		:focus-visible
+		~ .copy
+		button:not(:hover),
 	.expressive-code .frame .copy .feedback.show ~ button:not(:hover) {
 		opacity: 0.75;
 	}
 }
 .expressive-code .ec-section summary::marker {
 	display: inline-block;
-	content: '';
+	content: "";
 	width: 16px;
 	height: 16px;
 }
@@ -520,18 +633,18 @@
 .highlight .expressive-code .gutter .ln {
 	color: var(--ec-lineNumbers-hlFg);
 }
-.expressive-code .ec-line :where(span[style^='--']:not([class])),
-:root:not([data-theme='dark'])
-	.expressive-code[data-theme='dark']
+.expressive-code .ec-line :where(span[style^="--"]:not([class])),
+:root:not([data-theme="dark"])
+	.expressive-code[data-theme="dark"]
 	.ec-line
-	:where(span[style^='--']:not([class])) {
+	:where(span[style^="--"]:not([class])) {
 	color: var(--0, inherit);
 	font-style: var(--0fs, inherit);
 	font-weight: var(--0fw, inherit);
 	text-decoration: var(--0td, inherit);
 }
 @media (prefers-color-scheme: light) {
-	:root:not([data-theme='dark']) {
+	:root:not([data-theme="dark"]) {
 		--ec-brdCol: #e1e4e8;
 		--ec-codeBg: #fff;
 		--ec-codeFg: #24292e;
@@ -570,15 +683,18 @@
 		--ec-cs-closedBgCol: #d1d5da33;
 		--ec-cs-closedBrdCol: #d1d5da;
 	}
-	:root:not([data-theme='dark']) .expressive-code .ec-line :where(span[style^='--']:not([class])) {
+	:root:not([data-theme="dark"])
+		.expressive-code
+		.ec-line
+		:where(span[style^="--"]:not([class])) {
 		color: var(--1, inherit);
 		font-style: var(--1fs, inherit);
 		font-weight: var(--1fw, inherit);
 		text-decoration: var(--1td, inherit);
 	}
 }
-:root[data-theme='light'] .expressive-code:not([data-theme='dark']),
-.expressive-code[data-theme='light'] {
+:root[data-theme="light"] .expressive-code:not([data-theme="dark"]),
+.expressive-code[data-theme="light"] {
 	--ec-brdCol: #e1e4e8;
 	--ec-codeBg: #fff;
 	--ec-codeFg: #24292e;
@@ -617,11 +733,13 @@
 	--ec-cs-closedBgCol: #d1d5da33;
 	--ec-cs-closedBrdCol: #d1d5da80;
 }
-:root[data-theme='light']
-	.expressive-code:not([data-theme='dark'])
+:root[data-theme="light"]
+	.expressive-code:not([data-theme="dark"])
 	.ec-line
-	:where(span[style^='--']:not([class])),
-.expressive-code[data-theme='light'] .ec-line :where(span[style^='--']:not([class])) {
+	:where(span[style^="--"]:not([class])),
+.expressive-code[data-theme="light"]
+	.ec-line
+	:where(span[style^="--"]:not([class])) {
 	color: var(--1, inherit);
 	font-style: var(--1fs, inherit);
 	font-weight: var(--1fw, inherit);
