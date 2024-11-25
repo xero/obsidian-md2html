@@ -3,9 +3,9 @@
 mkdir -p dist
 find ./src/notes -type f -iname "html-*.md" | while IFS= read -r F; do
 	name=$(echo "$F" | sed -r "s/html-//;s/.+\/(.+)\..+/\1/;s/ /_/g")
-	dist="./dist/$name.html"
-	head=$(sed "s/:title:/$name/" <  ./src/html/header.html)
-	foot=$(cat ./src/html/footer.html)
-	dom=$(cat "$F");
-	printf "%s\n%s\n%s" "$head" "$dom" "$foot" > "$dist"
+	out="./dist/$name.html"
+	head=$(sed "s/:title:/$name/" < ./src/html/header.html)
+	foot=$(sed 's|"|\"|g' < ./src/html/footer.html)
+	dom=$(cat "$F")
+	echo "${head}${dom//<div class=\"mod-footer mod-ui\"><\/div><\/div><\/div><\/div>/${foot}}" > "$out"
 done
