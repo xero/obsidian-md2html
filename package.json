@@ -7,9 +7,11 @@
     "dev": "node esbuild.config.mjs",
     "build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
     "version": "node version-bump.mjs && git add manifest.json versions.json",
+	"clean": "rm ./dist/*.{html,js,css} |&:",
     "css": "bun run postcss src/css/main.css --no-map -o dist/style.css",
 	"js": "uglifyjs ./src/js/obsidian.js -mc toplevel,sequences=false -o ./dist/obsidian.js",
-    "web": "node htmlbuild.mjs"
+    "html": "node htmlbuild.mjs",
+    "web": "bun run clean; bun run css && bun run js && bun run html"
   },
   "keywords": [
     "obsidian",

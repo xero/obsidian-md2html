@@ -1541,8 +1541,6 @@ footer {
 			border-bottom: 4px solid #151515 !important;
 			display: inline-flex;
 			max-width: 96%;
-			word-break: break-all;
-			white-space: normal !important;
 		}
 		.ascii code,
 		.topaz code {
@@ -1554,6 +1552,7 @@ footer {
 		code code {
 			padding: 0 !important;
 			margin: 0 !important;
+			border-bottom: 0 !important;
 		}
 		.el-pre pre {
 			line-height: 1.25em !important;
@@ -1570,6 +1569,7 @@ footer {
 			code {
 				box-sizing: content-box !important;
 				border-bottom: 0 !important;
+				white-space: pre !important;
 			}
 			.ec-line,
 			* {
