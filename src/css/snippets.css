@@ -1,21 +1,10 @@
 /* ascii snippet
  * text art stylings for code blocks
  */
-/* writing view */
-.HyperMD-codeblock.ascii *,
-.HyperMD-codeblock.ascii .HyperMD-codeblock-bg,
-.cm-s-obsidian.ascii pre.HyperMD-codeblock,
-.HyperMD-codeblock .cm-line,
-.markdown-source-view.ascii pre,
-.markdown-source-view.ascii code,
-.markdown-source-view.ascii .cm-scroller pre,
-.markdown-source-view.ascii .cm-scroller code,
 .markdown-rendered.ascii pre,
 .markdown-rendered.ascii code,
 .markdown-rendered.ascii pre code,
-.markdown-rendered.ascii code:not(pre code),
-.is-live-preview.ascii div.HyperMD-codeblock-bg,
-.is-live-preview.ascii span.cm-inline-code {
+.markdown-rendered.ascii code:not(pre code) {
 	--code-normal: #e1d6f8;
 	--indentation-guide-color: #000000;
 	--indentation-guide-color-active: #000000;
@@ -61,9 +50,7 @@
 	min-width: 30px !important;
 	max-width: 30px !important;
 }
-.markdown-rendered.big-icons,
-.is-live-preview.big-icons,
-.markdown-source-view.big-icons {
+.markdown-rendered.big-icons {
 	.cm-iconize-icon svg {
 		width: 50px !important;
 		height: 50px !important;
@@ -75,44 +62,21 @@
 body.hide-tbl,
 .theme-dark.hide-tbl,
 .theme-light.hide-tbl,
-.markdown-source-view.hide-tbl,
-.markdown-preview-view.hide-tbl,
-.markdown-source-view.hide-tbl .cm-scroller {
-	--table-background: transparent !important;
-	--table-border-color: #222222 !important;
-	--table-header-background: #39274c !important;
-	--table-header-border-color: #201430 !important;
-	--table-header-color: #e1d6f8 !important;
-	--table-text-color: #e1d6f8 !important;
-	--table-selection: #9cda7c !important;
-	--table-selection-border-color: #87ff5f !important;
-	--table-selection-border-width: 1 !important;
-	--table-drag-handle-background: #452f5c !important;
-	--table-drag-handle-color: #e1d6f8 !important;
-	--table-add-button-background: #452f5c !important;
-	--table-add-button-border-width: 0px !important;
-	--table-add-button-border-color: #e1d6f8 !important;
-	--table-border-width: 0px !important;
-	--table-column-alt-background: transparent !important;
-	--table-column-first-border-width: 0px !important;
-	--table-column-last-border-width: 0px !important;
-	--table-row-alt-background: transparent !important;
-	--table-row-last-border-width: 0px !important;
-	--table-header-padding-x: 4px;
-	--table-header-padding-y: 4px;
-}
-.cm-s-obsidian.hide-tbl,
-.markdown-source-view.hide-tbl,
-.markdown-source-view.hide-tbl .cm-scroller,
-.is-live-preview.hide-tbl,
 .markdown-rendered.hide-tbl table {
 	& thead tr > th,
-	& thead tr > td,
+	& thead tr > td {
+		background: #39274c !important;
+		border-color: #201430 !important;
+		color: #e1d6f8 !important;
+		vertical-align: middle;
+		margin: 0px !important;
+		padding: 1px 13px 1px 1px;
+	}
 	& tbody tr > td {
 		margin: 0px !important;
 		padding: 1px 13px 1px 1px;
-		background: transparent !important;
-		vertical-align: middle;
+		background: none !important;
+		background-color: transparent !important;
 	}
 }
 
@@ -137,11 +101,6 @@ tbody.hide-tbl,
 }
 
 tbody.hide-tbl,
-.table-view-tbody.hide-tbl,
-.cm-s-obsidian.hide-tbl,
-.markdown-source-view.hide-tbl,
-.markdown-source-view.hide-tbl .cm-scroller,
-.is-live-preview.hide-tbl,
 .markdown-rendered.hide-tbl {
 	tr,
 	td {
@@ -153,10 +112,6 @@ tbody.hide-tbl,
  */
 tbody,
 .table-view-tbody,
-.cm-s-obsidian.hl-col,
-.markdown-source-view.hl-col,
-.markdown-source-view.hl-col .cm-scroller,
-.is-live-preview.hl-col,
 .markdown-rendered.hl-col {
 	table tbody {
 		height: fit-content;
@@ -186,10 +141,6 @@ tbody,
  */
 tbody,
 .table-view-tbody,
-.cm-s-obsidian.hl-tbl-icons,
-.markdown-source-view.hl-tbl-icons,
-.markdown-source-view.hl-tbl-icons .cm-scroller,
-.is-live-preview.hl-tbl-icons,
 .markdown-rendered.hl-tbl-icons {
 	table tbody {
 		height: fit-content;
@@ -215,45 +166,7 @@ tbody,
 		}
 	}
 }
-/* increase icon sizing */
-.nav-files-container {
-	.nav-folder-title,
-	.nav-file-title {
-		padding-bottom: 2px;
-	}
-	.iconize-icon svg {
-		width: 30px !important;
-		height: 30px !important;
-	}
-	/* font fixes */
-	.tree-item-inner.nav-folder-title-content,
-	.tree-item-inner.nav-file-title-content {
-		font-size: 1.1em !important;
-		padding-left: 2px;
-	}
-	.tree-item-inner.nav-file-title-content {
-		color: #9cda7c;
-	}
-	.tree-item-inner.nav-folder-title-content {
-		color: #d99145;
-	}
-}
-main[data-type="git-view"] {
-	.tree-item-inner.nav-folder-title-content,
-	.tree-item-inner.nav-file-title-content {
-		font-size: 1em !important;
-		padding-left: 0px;
-	}
-	.tree-item-inner.nav-file-title-content {
-		color: #e1d6f8;
-	}
-	.tree-item-inner.nav-folder-title-content {
-		color: #d99145;
-	}
-}
-.markdown-rendered,
-.is-live-preview,
-.markdown-source-view {
+.markdown-rendered {
 	.cm-iconize-icon svg {
 		width: 30px;
 		height: 30px;
@@ -266,17 +179,6 @@ main[data-type="git-view"] {
 body.midnight,
 .theme-dark.midnight,
 .theme-light.midnight,
-.markdown-source-view.midnight,
-.markdown-preview-view.midnight,
-.markdown-source-view.midnight .cm-scroller,
-.HyperMD-codeblock.midnight *,
-.HyperMD-codeblock.midnight .HyperMD-codeblock-bg,
-.cm-s-obsidian.midnight pre.HyperMD-codeblock,
-.HyperMD-codeblock .cm-line,
-.markdown-source-view.midnight pre,
-.markdown-source-view.midnight code,
-.markdown-source-view.midnight .cm-scroller pre,
-.markdown-source-view.midnight .cm-scroller code,
 .markdown-rendered.midnight pre,
 .markdown-rendered.midnight code,
 .markdown-rendered.midnight pre code,
@@ -284,9 +186,7 @@ body.midnight,
 .markdown-rendered.midnight pre,
 .markdown-rendered.midnight code,
 .markdown-rendered.midnight pre code,
-.markdown-rendered.midnight code:not(pre code),
-.is-live-preview.midnight div.HyperMD-codeblock-bg,
-.is-live-preview.midnight span.cm-inline-code {
+.markdown-rendered.midnight code:not(pre code) {
 	--code-normal: #e1d6f8;
 	--indentation-guide-color: #000000;
 	--indentation-guide-color-active: #000000;
@@ -318,18 +218,9 @@ body.midnight,
 	max-width: 25px !important;
 }
 /* apply to code blocks */
-.HyperMD-codeblock.topaz *,
-.HyperMD-codeblock.topaz .HyperMD-codeblock-bg,
-.cm-s-obsidian.topaz pre.HyperMD-codeblock,
-.markdown-source-view.topaz pre,
-.markdown-source-view.topaz code,
-.markdown-source-view.topaz .cm-scroller pre,
-.markdown-source-view.topaz .cm-scroller code,
 .markdown-rendered.topaz pre,
 .markdown-rendered.topaz code,
-.markdown-rendered.topaz pre code,
-.is-live-preview.topaz div.HyperMD-codeblock-bg,
-.is-live-preview.topaz span.cm-inline-code {
+.markdown-rendered.topaz pre code {
 	--code-normal: #e1d6f8;
 	--code-background: #000000;
 	--indentation-guide-color: #000000;
@@ -344,28 +235,6 @@ body.midnight,
 		white-space: nowrap !important;
 	}
 }
-/* writing mode */
-.HyperMD-codeblock.topaz *,
-.HyperMD-codeblock.topaz .HyperMD-codeblock-bg,
-.cm-s-obsidian.topaz pre.HyperMD-codeblock,
-.markdown-source-view.topaz pre,
-.markdown-source-view.topaz code,
-.markdown-source-view.topaz .cm-scroller pre,
-.markdown-source-view.topaz .cm-scroller code,
-.is-live-preview.topaz div.HyperMD-codeblock-bg,
-.is-live-preview.topaz span.cm-inline-code {
-	line-height: 0.9em !important;
-	letter-spacing: -0.7px;
-
-	.cm-lineWrapping {
-		white-space: nowrap !important;
-	}
-	/* hide lang button */
-	.code-block-flair {
-		display: none !important;
-	}
-}
-/* reading mode */
 .markdown-rendered.topaz pre,
 .markdown-rendered.topaz code,
 .markdown-rendered.topaz pre code,
@@ -378,52 +247,47 @@ body.midnight,
 		display: none !important;
 	}
 }
-/* index snip
- * custom table highlights for tag index pages
+/* icon-sheet snip
+ * highlight icons in the table columns
  */
-.markdown-rendered.index {
+.markdown-rendered.icon-sheet {
 	table thead {
-		border: 0;
-		tr,
-		td {
-			border: 0;
-		}
+		text-align: center;
 	}
+	table tbody {
+		height: fit-content;
 
-	table {
-		width: 100% !important;
-		margin-top: 10px;
+		td {
+			padding: 4px 8px;
 
-		tbody {
-			height: fit-content;
-
-			td {
-				padding: 14px;
-				vertical-align: middle;
-				text-align: left;
-
-				&:nth-child(1) {
-					background: #281b36 !important;
-				}
-				&:nth-child(1),
-				&:nth-child(3) {
-					font-size: 1.2em;
-					padding: 4px;
-
-					svg {
-						transform: scale(1.75);
-						margin: 0 5px 0 50px !important;
+			&:nth-child(1),
+			&:nth-child(3) {
+				svg {
+					&:nth-child(1),
+					&:nth-child(3) {
+						width: 60px;
+						height: 60px;
+						&::after {
+							margin-bottom: 8px !important;
+						}
 					}
 				}
-
-				&:nth-child(2) {
-					font-size: 1.15em;
-					color: #d99145;
-				}
-
-				ul li {
-					margin-left: -2px;
-				}
+			}
+			&:nth-child(1),
+			&:nth-child(2) {
+				background: #402c56 !important;
+			}
+			&:nth-child(2),
+			&:nth-child(4) {
+				padding-top: 25px !important;
+			}
+			&:nth-child(5) {
+				padding-top: 33px !important;
+			}
+			&:nth-child(1),
+			&:nth-child(3),
+			&:nth-child(5) {
+				padding-left: 20px !important;
 			}
 		}
 	}

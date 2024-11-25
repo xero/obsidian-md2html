@@ -21,8 +21,9 @@ import {
 export default class md2html extends Plugin {
 	//--- render functions
 	clean(html: string, toc = false): string {
+		let dom = `<nav id="thenav"><header id="navtitle"><h2><a href="index.html"><svg id="logo" width="31" height="40" viewBox="0 0 31 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"><g transform="matrix(0.237232,-0.0348373,-0.0289701,-0.197278,-32.8929,48.2385)"><path d="M239.22,0L175.82,35.04L150,90.9L189.14,180.94L244.7,200L254.88,179.6L276,52.78L239.22,0Z" style="fill:rgb(52,32,140);fill-rule:nonzero;"/></g><g transform="matrix(0.237232,-0.0348373,-0.0289701,-0.197278,-32.8929,48.2385)"><clipPath id="_clip1"><path d="M276,52.78L236.88,28.82L182.86,71.4L244.7,200L254.88,179.6L276,52.78Z" clip-rule="nonzero"/></clipPath><g clip-path="url(#_clip1)"><g transform="matrix(4.1263,-0.728661,-0.605944,-4.96198,164.956,215.391)"><use xlink:href="#_Image2" x="8.419" y="0.258" width="23px" height="35px"/></g></g></g><g transform="matrix(0.237232,-0.0348373,-0.0289701,-0.197278,-32.8929,48.2385)"><path d="M276,52.78L239.22,0L236.88,28.82L276,52.78Z" style="fill:rgb(175,159,244);fill-rule:nonzero;"/></g><g transform="matrix(0.237232,-0.0348373,-0.0289701,-0.197278,-32.8929,48.2385)"><path d="M236.88,28.82L239.22,0L175.82,35.04L182.86,71.4L236.88,28.82Z" style="fill:rgb(74,55,160);fill-rule:nonzero;"/></g><g transform="matrix(0.237232,-0.0348373,-0.0289701,-0.197278,-32.8929,48.2385)"><path d="M182.86,71.4L189.14,180.94L244.7,200L182.86,71.4Z" style="fill:rgb(74,55,160);fill-rule:nonzero;"/></g><defs><image id="_Image2" width="23px" height="35px" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABcAAAAjCAYAAAB/wZEbAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAUElEQVRIiWPMCTvzn4GKYMoqE0YYm4maBqMDqhuOHBJDy+Wjhg9Dw2HJcei5fNTwgTOckdrlOTIYusEyavio4aOGjxo+ajjdDGehhaGw3gUAweoNYZOwfssAAAAASUVORK5CYII="/></defs></svg><span class="ghost">xero's notes</span></a></h2></header><aside id="navmenu"><section id="thetop"></section>`;
 		if (toc) {
-			let dom = `<div class="toc"><h1><div id="toctoggle" class="is-folded"></div>Contents</h1><ul id="toclist" class="has-list-bullet">`;
+			dom += `<section id="toc"><h3><div id="tocicon"></div>Contents</h3></section></aside><ul id="toclist" class="has-list-bullet">`;
 			html = html
 				.replace(/<h. data-heading=".*?" dir=/g, (match) => {
 					const h = parseInt(match.substring(2, 3));
@@ -35,20 +36,23 @@ export default class md2html extends Plugin {
 							? anchor = anchor.substring(0, anchor.length - 2)
 							: anchor = "x";
 					}
-					dom += `<li class="tab${h}"><span class="list-bullet"></span><a href="#${anchor}">${link}</a></li>`;
-					return `<a name="${anchor}"></a><br>${match}`;
+					dom += `<li class="tab${h}"><span class="list-bullet"></span><a class="navlink" href="#${anchor}">${link}</a></li>`;
+					return `<a class="anchor" name="${anchor}"></a><br>${match}`;
 				})
-				.replace(
-					'<div class="mod-header mod-ui"></div><div class="el-pre mod-frontmatter mod-ui"><div class="block-language-yaml"></div></div>',
-					dom + "</ul></div>",
-				);
+				dom += "</ul>";
 		}
-		// strip out unnecessary html
+		html = html.replace(
+			'<div class="mod-header mod-ui"></div><div class="el-pre mod-frontmatter mod-ui"><div class="block-language-yaml"></div></div>',
+			dom + '</nav>'
+		);
 		return html
-			.replace('<div class="mod-header mod-ui"></div><div class="el-pre mod-frontmatter mod-ui"><div class="block-language-yaml"></div></div>', "")
+			.replace(/capacitor.*\/(?=(.*.(png|jpg|jpeg)))/gi, "")
+			// .replace(/<img?(.*)src="?(.*)"><\/span>/g, (match) => {
+			// 	const link = match.replace(/"><\/span>/, "").replace(/.*"/, "");
+			// 	return `<a href="${link}">`+match.replace("</span>", "</a></span>");
+			// })
 			.replace(/style="padding-bottom: .*px; min-height: .*px;"/, "")
 			.replace(/footnote-link" target="_blank"/, 'footnote-link"')
-			.replace(/capacitor.*\/(?=(.*.(png|jpg|jpeg)))/gi, "")
 			.replace(/link" target="_blank"/g, 'link" ')
 			.replace(/data-rve-block="true"/g, "")
 			.replace(/display: none/g, "")
@@ -58,11 +62,6 @@ export default class md2html extends Plugin {
 		const view = this.app.workspace.getActiveViewOfType(MarkdownView);
 		let html = "";
 		if (view) {
-			// save scroll pos
-			const last = {
-				editor: view.editor.getScrollInfo(),
-				preview: view.previewMode.getScroll(),
-			};
 			let i = 0;
 			const cm = view.editor.cm;
 			view.previewMode.unfoldAll();
@@ -71,27 +70,18 @@ export default class md2html extends Plugin {
 			cm.measure();
 			// force render document
 			while (i++ < view.editor.lineCount()) {
-				view.editor.scrollTo(0, i * 50);
 				view.previewMode.applyScroll(i);
 			}
 			sleep(1);
 			// get html dom
-			html = view.contentEl.innerHTML;
 			html += view.previewMode.view.contentEl.innerHTML;
 			cm.viewState.printing = false;
 			cm.measure();
-			// reset scroll pos
-			view.editor.scrollTo(last.editor.left, last.editor.top);
-			view.previewMode.applyScroll(last.preview);
-			view.previewMode.rerender(true);
 		}
 		return this.clean(
 			'<div class="markdown-reading-view"' +
-				html
-					.split('<div class="markdown-reading-view"')[1]
-					.split('<div class="markdown-source-view')[0],
-			toc,
-		);
+				html.split('<div class="markdown-reading-view"')[1],
+			toc);
 	}
 	async render(md: string): Promise<string> {
 		const comp = new Component();
@@ -129,7 +119,7 @@ export default class md2html extends Plugin {
 		this.addCommand({
 			id: "md2html-new",
 			name: "note html to new file",
-			callback: async () => {
+			editorCallback: async () => {
 				this.app.vault.create(
 					"html-" + this.app.workspace.getActiveFile()?.name || "new",
 					await this.getRendered(),
@@ -149,7 +139,7 @@ export default class md2html extends Plugin {
 		this.addCommand({
 			id: "md2html-new-toc",
 			name: "note html to new file with table of contents",
-			callback: async () => {
+			editorCallback: async () => {
 				this.app.vault.create(
 					"html-" + this.app.workspace.getActiveFile()?.name || "new",
 					await this.getRendered(true),
