@@ -8,7 +8,8 @@
     "build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
     "version": "node version-bump.mjs && git add manifest.json versions.json",
     "css": "bun run postcss src/css/main.css --no-map -o dist/style.css",
-    "web": "bash generate"
+	"js": "uglifyjs ./src/js/obsidian.js -mc toplevel,sequences=false -o ./dist/obsidian.js",
+    "web": "node htmlbuild.mjs"
   },
   "keywords": [
     "obsidian",
@@ -37,6 +38,7 @@
     "postcss-nested": "^7.0.2",
     "tslib": "2.4.0",
     "typescript": "^5.6.3",
+    "uglify-js": "^3.19.3",
     "update-browserslist-db": "^1.1.1"
   }
 }
