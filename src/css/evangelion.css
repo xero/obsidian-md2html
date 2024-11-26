@@ -880,7 +880,36 @@ ul.has-list-bullet li {
 	margin-left: 24px;
 	padding-top: 0.175em;
 }
-
+.el-p:has(.icon-bullets) + .el-ul li {
+	.list-bullet {
+		display: none !important;
+	}
+	ul li .list-bullet {
+		display: block !important;
+	}
+	.cm-iconize-icon svg {
+		width: 30px !important;
+		height: 30px !important;
+		margin: 0 2px 0px 0px !important;
+		display: block !important;
+		position: relative !important;
+		top: 0px !important;
+		left: -4px !important;
+	}
+	.cm-iconize-icon[data-icon="XoGoat"] svg {
+		width: 40px !important;
+		height: 40px !important;
+		margin: -10px -10px 0px 0px !important;
+		display: block !important;
+		position: relative !important;
+		top: 5px !important;
+		left: -8px !important;
+	}
+	strong {
+		font-size: 130% !important;
+		margin-left: -25px !important;
+	}
+}
 .list-bullet::before,
 ul:not(li > *) > li > .list-bullet::before,
 ul:not(li > *) > li > ul > li > .list-bullet::before,
@@ -1211,9 +1240,9 @@ header {
 	display: inline-flex;
 
 	.cm-iconize-icon svg {
-		width: 36px !important;
-		height: 36px !important;
-		margin: 7px 2px 0 0;
+		width: 60px !important;
+		height: 60px !important;
+		margin: 15px 2px 0 0;
 	}
 }
 a.anchor {
@@ -1542,9 +1571,9 @@ footer {
 			display: inline-flex;
 			max-width: 96%;
 		}
-		.ascii code,
-		.topaz code {
-			overflow: visible !important;
+		.ascii pre[data-language="ascii"] code,
+		.topaz pre[data-language="ascii"] code {
+			overflow: scroll !important;
 			word-break: none !important;
 			white-space: pre !important;
 		}
@@ -1594,6 +1623,13 @@ footer {
 				transform: scale(0.5) !important;
 				margin-bottom: -20px !important;
 				margin-right: -18px !important;
+			}
+			pre[data-language="ascii"] {
+				.ec-line {
+					letter-spacing: 0px !important;
+					margin-top: -5px !important;
+					font-size: var(--font-ui-small);
+				}
 			}
 		}
 	}

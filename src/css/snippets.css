@@ -8,7 +8,6 @@
 	--code-normal: #e1d6f8;
 	--indentation-guide-color: #000000;
 	--indentation-guide-color-active: #000000;
-	overflow: visible !important;
 	line-height: 1.2em !important;
 	letter-spacing: -1px;
 	.cm-lineWrapping {
@@ -28,7 +27,6 @@
 	--indentation-guide-color: #000000;
 	--indentation-guide-color-active: #000000;
 	letter-spacing: -1px;
-	overflow: visible !important;
 	line-height: 1.2em !important;
 
 	*[class*="button"] {
@@ -229,7 +227,6 @@ body.midnight,
 	--code-border-color: #000000;
 	--code-border-radius: 0px;
 	font-family: "topaz" !important;
-	overflow: visible !important;
 
 	.cm-lineWrapping {
 		white-space: nowrap !important;
@@ -240,7 +237,7 @@ body.midnight,
 .markdown-rendered.topaz pre code,
 .markdown-rendered.topaz code:not(pre code) {
 	line-height: 0.95 !important;
-	letter-spacing: -1px;
+	letter-spacing: -1pxm !important;
 
 	/* hide copy button */
 	*[class*="button"] {
